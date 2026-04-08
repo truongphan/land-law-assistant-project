@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Legal Assistant - User Stories & Use Cases</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            overflow: hidden;
+        }
+        
+        .presentation-container {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+        }
+        
+        .slide {
+            display: none;
+            width: 100%;
+            height: 100%;
+            padding: 60px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            margin: 20px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+            position: absolute;
+            top: 0;
+            left: 0;
+            animation: slideIn 0.6s ease-out;
+        }
+        
+        .slide.active {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        .slide h1 {
+            color: #2c3e50;
+            font-size: 3em;
+            margin-bottom: 30px;
+            text-align: center;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .slide h2 {
+            color: #34495e;
+            font-size: 2.2em;
+            margin-bottom: 25px;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 10px;
+        }
+        
+        .slide h3 {
+            color: #2980b9;
+            font-size: 1.6em;
+            margin: 20px 0 15px;
+            position: relative;
+        }
+        
+        .slide h3::before {
+            content: "▶";
+            color: #e74c3c;
+            margin-right: 10px;
+            font-size: 0.8em;
+        }
+        
+        .slide p, .slide li {
+            color: #2c3e50;
+            font-size: 1.2em;
+            line-height: 1.8;
+            margin-bottom: 15px;
+        }
+        
+        .slide ul {
+            margin-left: 30px;
+        }
+        
+        .slide li {
+            margin-bottom: 12px;
+            position: relative;
+        }
+        
+        .user-story {
+            background: linear-gradient(135deg, #74b9ff, #0984e3);
+            padding: 25px;
+            border-radius: 15px;
+            margin: 20px 0;
+            color: white;
+            box-shadow: 0 10px 25px rgba(116, 185, 255, 0.3);
+            transform: scale(1);
+            transition: transform 0.3s ease;
+        }
+        
+        .user-story:hover {
+            transform: scale(1.02);
+        }
+        
+        .use-case {
+            background: linear-gradient(135deg, #fd79a8, #e84393);
+            padding: 25px;
+            border-radius: 15px;
+            margin: 20px 0;
+            color: white;
+            box-shadow: 0 10px 25px rgba(253, 121, 168, 0.3);
+            transform: scale(1);
+            transition: transform 0.3s ease;
+        }
+        
+        .use-case:hover {
+            transform: scale(1.02);
+        }
+        
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+        
+        .feature-card {
+            background: linear-gradient(135deg, #a29bfe, #6c5ce7);
+            padding: 25px;
+            border-radius: 15px;
+            color: white;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(162, 155, 254, 0.3);
+            transition: transform 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+        }
+        
+        .feature-card h4 {
+            font-size: 1.4em;
+            margin-bottom: 15px;
+        }
+        
+        .navigation {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            display: flex;
+            gap: 15px;
+            z-index: 1000;
+        }
+        
+        .nav-btn {
+            padding: 15px 25px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1.1em;
+            font-weight: bold;
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+            transition: all 0.3s ease;
+        }
+        
+        .nav-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 25px rgba(102, 126, 234, 0.6);
+        }
+        
+        .nav-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .slide-counter {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-weight: bold;
+            z-index: 1000;
+        }
+        
+        .highlight {
+            background: linear-gradient(135deg, #fdcb6e, #e17055);
+            color: white;
+            padding: 3px 8px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .tech-item {
+            background: linear-gradient(135deg, #00b894, #00a085);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(0, 184, 148, 0.3);
+        }
+        
+        .architecture-diagram {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin: 20px 0;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        
+        .flow-step {
+            display: inline-block;
+            background: linear-gradient(135deg, #00cec9, #00b894);
+            color: white;
+            padding: 15px 25px;
+            margin: 10px;
+            border-radius: 10px;
+            font-weight: bold;
+            position: relative;
+        }
+        
+        .flow-step:not(:last-child)::after {
+            content: "→";
+            position: absolute;
+            right: -30px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #2c3e50;
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation-container">
+        <!-- Slide 1: Title -->
+        <div class="slide active">
+            <h1>🏛️ Legal Assistant AI System</h1>
+            <div style="text-align: center; margin-top: 50px;">
+                <h2>User Stories & Use Cases</h2>
+                <p style="font-size: 1.5em; color: #7f8c8d; margin-top: 40px;">
+                    Intelligent Legal Document Assistant with Multi-language Support
+                </p>
+                <div class="tech-stack" style="justify-content: center; margin-top: 50px;">
+                    <span class="tech-item">FastAPI</span>
+                    <span class="tech-item">OpenAI GPT</span>
+                    <span class="tech-item">Pinecone Vector DB</span>
+                    <span class="tech-item">LangChain</span>
+                    <span class="tech-item">Audio/TTS</span>
+                    <span class="tech-item">Web Crawling</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 2: System Overview -->
+        <div class="slide">
+            <h2>🎯 System Overview</h2>
+            <div class="architecture-diagram">
+                <div class="flow-step">User Query</div>
+                <div class="flow-step">Classification</div>
+                <div class="flow-step">Document Retrieval</div>
+                <div class="flow-step">Web Crawling</div>
+                <div class="flow-step">AI Response</div>
+                <div class="flow-step">Audio/TTS</div>
+            </div>
+            
+            <div style="margin-top: 40px;">
+                <h3>Core Capabilities</h3>
+                <ul>
+                    <li><span class="highlight">Multi-language Support</span> (Vietnamese & English)</li>
+                    <li><span class="highlight">Document Processing</span> (PDF upload & analysis)</li>
+                    <li><span class="highlight">Real-time Web Crawling</span> from government sources</li>
+                    <li><span class="highlight">Vector Database</span> for intelligent document retrieval</li>
+                    <li><span class="highlight">Text-to-Speech</span> with lip-sync generation</li>
+                    <li><span class="highlight">Streaming Response</span> for real-time interaction</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Slide 3: Primary User Stories -->
+        <div class="slide">
+            <h2>👤 Primary User Stories</h2>
+            
+            <div class="user-story">
+                <h3>Story 1: Legal Question Answering</h3>
+                <p><strong>As a</strong> citizen/lawyer/legal professional</p>
+                <p><strong>I want to</strong> ask legal questions in Vietnamese or English</p>
+                <p><strong>So that</strong> I can get accurate legal information from official documents</p>
+            </div>
+
+            <div class="user-story">
+                <h3>Story 2: Document Upload & Analysis</h3>
+                <p><strong>As a</strong> legal professional</p>
+                <p><strong>I want to</strong> upload PDF legal documents to the system</p>
+                <p><strong>So that</strong> I can query specific information from my uploaded documents</p>
+            </div>
+
+            <div class="user-story">
+                <h3>Story 3: Real-time Legal Updates</h3>
+                <p><strong>As a</strong> legal researcher</p>
+                <p><strong>I want to</strong> get the most current legal information from government websites</p>
+                <p><strong>So that</strong> I can access up-to-date regulations and laws</p>
+            </div>
+        </div>
+
+        <!-- Slide 4: Advanced User Stories -->
+        <div class="slide">
+            <h2>🚀 Advanced User Stories</h2>
+            
+            <div class="user-story">
+                <h3>Story 4: Audio-Enabled Legal Assistant</h3>
+                <p><strong>As a</strong> user with visual impairments or preference for audio</p>
+                <p><strong>I want to</strong> receive legal responses in audio format with lip-sync</p>
+                <p><strong>So that</strong> I can consume legal information through audio interface</p>
+            </div>
+
+            <div class="user-story">
+                <h3>Story 5: Multi-language Legal Research</h3>
+                <p><strong>As a</strong> international legal professional</p>
+                <p><strong>I want to</strong> ask questions in English and get responses about Vietnamese law</p>
+                <p><strong>So that</strong> I can understand Vietnamese legal framework without language barriers</p>
+            </div>
+
+            <div class="user-story">
+                <h3>Story 6: Streaming Legal Consultation</h3>
+                <p><strong>As a</strong> user seeking immediate legal guidance</p>
+                <p><strong>I want to</strong> receive real-time streaming responses</p>
+                <p><strong>So that</strong> I don't have to wait for complete processing to start reading</p>
+            </div>
+        </div>
+
+        <!-- Slide 5: Core Use Cases -->
+        <div class="slide">
+            <h2>📋 Core Use Cases</h2>
+            
+            <div class="use-case">
+                <h3>Use Case 1: Legal Document Query</h3>
+                <p><strong>Actor:</strong> Legal Professional/Citizen</p>
+                <p><strong>Goal:</strong> Get specific legal information</p>
+                <p><strong>Flow:</strong></p>
+                <ul>
+                    <li>User submits legal question via API</li>
+                    <li>System classifies query as legal/non-legal</li>
+                    <li>System retrieves relevant documents from vector database</li>
+                    <li>AI generates comprehensive legal response</li>
+                    <li>Response delivered with optional audio/TTS</li>
+                </ul>
+            </div>
+
+            <div class="use-case">
+                <h3>Use Case 2: PDF Document Processing</h3>
+                <p><strong>Actor:</strong> Document Administrator</p>
+                <p><strong>Goal:</strong> Make legal documents searchable</p>
+                <p><strong>Flow:</strong></p>
+                <ul>
+                    <li>Upload PDF legal document</li>
+                    <li>System extracts and chunks text content</li>
+                    <li>Generate embeddings and store in Pinecone</li>
+                    <li>Document becomes searchable for future queries</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Slide 6: Advanced Use Cases -->
+        <div class="slide">
+            <h2>🔧 Advanced Use Cases</h2>
+            
+            <div class="use-case">
+                <h3>Use Case 3: Web Crawling for Current Laws</h3>
+                <p><strong>Actor:</strong> System (Automated)</p>
+                <p><strong>Goal:</strong> Access most recent legal information</p>
+                <p><strong>Flow:</strong></p>
+                <ul>
+                    <li>System detects need for current information</li>
+                    <li>Identifies relevant legal area from query</li>
+                    <li>Crawls government websites (chinhphu.vn)</li>
+                    <li>Extracts and processes PDF documents</li>
+                    <li>Stores in temporary vector store</li>
+                    <li>Incorporates findings into response</li>
+                </ul>
+            </div>
+
+            <div class="use-case">
+                <h3>Use Case 4: Multi-language Legal Assistance</h3>
+                <p><strong>Actor:</strong> International User</p>
+                <p><strong>Goal:</strong> Access Vietnamese legal information in English</p>
+                <p><strong>Flow:</strong></p>
+                <ul>
+                    <li>User asks question in English</li>
+                    <li>System translates query to Vietnamese for document search</li>
+                    <li>Retrieves Vietnamese legal documents</li>
+                    <li>Generates response in original user language</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Slide 7: Audio & TTS Use Cases -->
+        <div class="slide">
+            <h2>🎵 Audio & TTS Use Cases</h2>
+            
+            <div class="use-case">
+                <h3>Use Case 5: Audio Legal Consultation</h3>
+                <p><strong>Actor:</strong> Audio-preferred User</p>
+                <p><strong>Goal:</strong> Receive legal guidance through audio</p>
+                <p><strong>Flow:</strong></p>
+                <ul>
+                    <li>User requests audio response</li>
+                    <li>System processes legal query normally</li>
+                    <li>Breaks response into manageable chunks</li>
+                    <li>Generates TTS audio with gTTS</li>
+                    <li>Creates lip-sync data for visual representation</li>
+                    <li>Streams audio chunks with synchronization</li>
+                </ul>
+            </div>
+
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4>🎤 Text-to-Speech</h4>
+                    <p>Multi-language TTS with Google Text-to-Speech integration</p>
+                </div>
+                <div class="feature-card">
+                    <h4>👄 Lip Sync Generation</h4>
+                    <p>Automated mouth shape generation for visual avatar representation</p>
+                </div>
+                <div class="feature-card">
+                    <h4>😊 Emotion Detection</h4>
+                    <p>Basic sentiment analysis for appropriate facial expressions</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 8: Technical Architecture -->
+        <div class="slide">
+            <h2>🏗️ Technical Architecture</h2>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+                <div>
+                    <h3>Backend Components</h3>
+                    <ul>
+                        <li><strong>FastAPI:</strong> RESTful API framework</li>
+                        <li><strong>LangChain:</strong> LLM orchestration</li>
+                        <li><strong>LangGraph:</strong> Workflow management</li>
+                        <li><strong>OpenAI GPT:</strong> Language model</li>
+                        <li><strong>Pinecone:</strong> Vector database</li>
+                        <li><strong>BeautifulSoup:</strong> Web scraping</li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3>Key Features</h3>
+                    <ul>
+                        <li><strong>Vector Search:</strong> Semantic document retrieval</li>
+                        <li><strong>Multi-namespace:</strong> Separate document types</li>
+                        <li><strong>Streaming:</strong> Real-time response delivery</li>
+                        <li><strong>Translation:</strong> Multi-language support</li>
+                        <li><strong>Classification:</strong> Query type detection</li>
+                        <li><strong>Async Processing:</strong> Background tasks</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="architecture-diagram" style="margin-top: 30px;">
+                <h4>Workflow Architecture</h4>
+                <div style="margin-top: 20px;">
+                    <div class="flow-step">Query Classification</div>
+                    <div class="flow-step">Document Retrieval</div>
+                    <div class="flow-step">Web Crawl Check</div>
+                    <div class="flow-step">Response Generation</div>
+                    <div class="flow-step">Audio Processing</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 9: User Personas -->
+        <div class="slide">
+            <h2>👥 User Personas</h2>
+            
+            <div class="feature-grid">
+                <div class="feature-card" style="background: linear-gradient(135deg, #74b9ff, #0984e3);">
+                    <h4>🏛️ Legal Professional</h4>
+                    <p>Lawyers, judges, legal advisors who need quick access to legal precedents and current regulations</p>
+                    <ul style="text-align: left; margin-top: 15px;">
+                        <li>Document analysis</li>
+                        <li>Case research</li>
+                        <li>Current law updates</li>
+                    </ul>
+                </div>
+                
+                <div class="feature-card" style="background: linear-gradient(135deg, #fd79a8, #e84393);">
+                    <h4>👨‍💼 Business Owner</h4>
+                    <p>Entrepreneurs and business managers who need to understand legal compliance and regulations</p>
+                    <ul style="text-align: left; margin-top: 15px;">
+                        <li>Compliance checking</li>
+                        <li>Business law queries</li>
+                        <li>Regulatory updates</li>
+                    </ul>
+                </div>
+                
+                <div class="feature-card" style="background: linear-gradient(135deg, #00b894, #00a085);">
+                    <h4>👨‍🎓 Legal Student</h4>
+                    <p>Law students and researchers who need comprehensive legal information for studies</p>
+                    <ul style="text-align: left; margin-top: 15px;">
+                        <li>Legal research</li>
+                        <li>Study assistance</li>
+                        <li>Case analysis</li>
+                    </ul>
+                </div>
+                
+                <div class="feature-card" style="background: linear-gradient(135deg, #a29bfe, #6c5ce7);">
+                    <h4>🌍 International User</h4>
+                    <p>Foreign investors and international businesses needing Vietnamese legal information</p>
+                    <ul style="text-align: left; margin-top: 15px;">
+                        <li>Language translation</li>
+                        <li>Legal system understanding</li>
+                        <li>Cross-border compliance</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 10: Conclusion -->
+        <div class="slide">
+            <h2>🎯 Summary & Benefits</h2>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 30px;">
+                <div>
+                    <h3>Key Benefits</h3>
+                    <ul>
+                        <li>✅ <strong>Accurate Legal Information:</strong> Based on official documents</li>
+                        <li>✅ <strong>Multi-language Support:</strong> Vietnamese & English</li>
+                        <li>✅ <strong>Real-time Updates:</strong> Web crawling for current laws</li>
+                        <li>✅ <strong>Accessible Interface:</strong> Audio/TTS support</li>
+                        <li>✅ <strong>Scalable Architecture:</strong> Vector database & streaming</li>
+                        <li>✅ <strong>Document Processing:</strong> PDF upload & analysis</li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3>Use Case Coverage</h3>
+                    <ul>
+                        <li>🏛️ <strong>Legal Professionals:</strong> Research & Analysis</li>
+                        <li>👨‍💼 <strong>Business Users:</strong> Compliance & Regulations</li>
+                        <li>👨‍🎓 <strong>Students:</strong> Learning & Research</li>
+                        <li>🌍 <strong>International Users:</strong> Cross-language Access</li>
+                        <li>♿ <strong>Accessibility:</strong> Audio-enabled Interface</li>
+                        <li>⚡ <strong>Real-time:</strong> Streaming Responses</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="user-story" style="margin-top: 40px; text-align: center;">
+                <h3>🚀 Ready for Legal AI Innovation</h3>
+                <p>A comprehensive legal assistant system that bridges the gap between complex legal documents and user-friendly access, supporting multiple languages and delivery methods for maximum accessibility.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide-counter">
+        <span id="current-slide">1</span> / <span id="total-slides">10</span>
+    </div>
+
+    <div class="navigation">
+        <button class="nav-btn" id="prev-btn" onclick="previousSlide()">← Previous</button>
+        <button class="nav-btn" id="next-btn" onclick="nextSlide()">Next →</button>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+        
+        document.getElementById('total-slides').textContent = totalSlides;
+
+        function showSlide(index) {
+            slides.forEach(slide => slide.classList.remove('active'));
+            slides[index].classList.add('active');
+            
+            document.getElementById('current-slide').textContent = index + 1;
+            document.getElementById('prev-btn').disabled = index === 0;
+            document.getElementById('next-btn').disabled = index === totalSlides - 1;
+        }
+
+        function nextSlide() {
+            if (currentSlide < totalSlides - 1) {
+                currentSlide++;
+                showSlide(currentSlide);
+            }
+        }
+
+        function previousSlide() {
+            if (currentSlide > 0) {
+                currentSlide--;
+                showSlide(currentSlide);
+            }
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowRight' || e.key === ' ') {
+                e.preventDefault();
+                nextSlide();
+            } else if (e.key === 'ArrowLeft') {
+                e.preventDefault();
+                previousSlide();
+            }
+        });
+
+        // Initialize
+        showSlide(0);
+        
+        // Auto-play option (uncomment if needed)
+        // setInterval(nextSlide, 10000); // Auto advance every 10 seconds
+    </script>
+</body>
+</html>
