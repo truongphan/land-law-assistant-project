@@ -49,9 +49,9 @@ from googletrans import Translator
 
 class Config:
     """Application configuration"""
-    OPENAI_API_KEY = "sk-mjYPCFdZDhgULcLGwWeqfg"
+    OPENAI_API_KEY = "sk-*"
     OPENAI_BASE_URL = "https://aiportalapi.stu-platform.live/jpe"
-    PINECONE_API_KEY = "pcsk_3iV67y_GP3RR5rzXu3QLtwLtsP1L9BpZN9LdPVnp8iNDyRSWL5t147DJ3NK3emL4irFCgL"
+    PINECONE_API_KEY = "pcsk_*"
     PINECONE_INDEX_NAME = "land-law-assistant"
     
     # Namespaces
@@ -223,7 +223,7 @@ class AIClients:
         
         self.embeddings = OpenAIEmbeddings(
             model="text-embedding-3-small",
-            openai_api_key="sk-LmOjVCDsiiCB6U3_KUmlVg",
+            openai_api_key="sk-*",
             openai_api_base=Config.OPENAI_BASE_URL,
             dimensions=1024
         )

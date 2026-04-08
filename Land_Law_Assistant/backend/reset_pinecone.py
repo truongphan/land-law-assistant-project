@@ -1,7 +1,7 @@
 import time
 from pinecone import Pinecone, ServerlessSpec
 
-PINECONE_API_KEY = "pcsk_3iV67y_GP3RR5rzXu3QLtwLtsP1L9BpZN9LdPVnp8iNDyRSWL5t147DJ3NK3emL4irFCgL"
+PINECONE_API_KEY = "pcsk_*"
 
 OLD_INDEX_NAME = "hackathon-fpt-final"
 NEW_INDEX_NAME = "land-law-assistant"
